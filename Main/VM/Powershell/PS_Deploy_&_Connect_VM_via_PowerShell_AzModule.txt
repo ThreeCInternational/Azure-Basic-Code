@@ -1,0 +1,165 @@
+--Deploying VM to Azure Tenant via PowerShell and connecting via mstsc using powershell
+
+--Project Details
+--Cloud Connect Consult (3C) Project
+--Prepared by GS
+--Email 			    : CloudConnectConsult@Outlook.com 
+--Start Date		  : 11/09/2021 09:31 AM 	(MM/DD/YYYY HH:MM AM/PM)
+--Date Completion	: 11/09/2021 05:34 PM	(MM/DD/YYYY HH:MM AM/PM)
+
+
+-- Import Az Module 
+-- Before Loading Azure Powershell Module, it must be first Loaded into Powershell Session
+-- Import Module is used to Load Powershell Modules so that their commands can be accessed
+-- Pulls the module into active session, so the commandLets can be accessed
+-- Type the following command and Hit Enter
+
+Import-Module -Name Az
+
+--Usually UnEventfull, no message will come
+
+--Connect Azure Tenant
+-- Connect-AzureRmAccount is the easiest way to connect to Azure from Powershell
+--Type the following command and hit enter
+
+Connect-AzAccount
+
+--It will open dialog box for credentials, as soon as you enter, will print tenant details
+--and control comes back to command prompt 
+
+Account                     SubscriptionName TenantId                             Environment
+-------                     ---------------- --------                             -----------
+gurp1234569@hotmail.com 	Pay-As-You-Go    466a9e44-466a9e44-466a9e44-466a9e44 AzureCloud
+
+
+
+--Create a Resource Group under which VM will be Deployed, 
+--The Azure Resource Group is a logical Container that is used for Grouping Azure Resources
+
+--Type the following command and Hit Enter
+
+New-AzResourceGroup -ResourceGroupName "Vmlab" -Location "EastUS"
+
+--Prints the following
+
+ResourceGroupName : VmLab
+Location          : eastus
+ProvisioningState : Succeeded
+Tags              :
+ResourceId        : /subscriptions/xxxxxx-yyyyy-4f6f-a344-xxxxxxxxx/resourceGroups/VmLab
+
+--you can validate on Azure Portal, also get the list of all resource groups
+
+--Type the following command Hit Enter, it will list out all the resource groups in connected Tenant
+
+Get-AzResourceGroup
+
+-- Deploying a VM with Default OS image, it will run Windows Server 2016, beacuse I am not going to specify 
+
+--Process of provisioning a VM require is a two step process, 
+
+ 1. "Get-Credential" is used to capture credentials, allows to specify administrative credentials for the vm, so when the vm is provisioned , it will have 
+ a local admin on that. Type following and hit enter
+ 
+   \> $cred = Get-Credential, it will prompt login credentials, it will store credentials in $cred
+ 
+ cmdlet Get-Credential at command pipeline position 1
+	Supply values for the following parameters:
+	Credential
+
+  >it will open Login popup, where you can set credentials in this case I have set gpsadmin/Welcome#2024
+  credentials are stored in $cred variable 
+ 
+  
+ 2. Once I have credetial set, I will use following command to create new VM
+    type following command, hit enter
+	
+
+	New-AzVm `
+    -ResourceGroupName "VmLab" `
+    -Name "myVM" `
+    -Location "EastUS" `
+    -VirtualNetworkName "myVnet" `
+    -SubnetName "mySubnet" `
+    -SecurityGroupName "MyNSG" `
+    -PublicIpAddressName "myPublicIP" `
+	-Credential $cred `
+    -OpenPorts 80,3389	
+
+It will print following on Powershell Command Prompt
+
+No Size value has been provided. The VM will be created with the default size Standard_D2s_v3.
+
+
+ResourceGroupName        : VmLab
+Id                       : /subscriptions/xxxxx-xxxxx-4f6f-a344-xxxxxxxx/resourceGroups/VmLab/providers/Microsoft
+.Compute/virtualMachines/myVM
+VmId                     : 7da4249b-xxxxx-43c6-xxxx-0210eaxxxx
+Name                     : myVM
+Type                     : Microsoft.Compute/virtualMachines
+Location                 : eastus
+Tags                     : {}
+HardwareProfile          : {VmSize}
+NetworkProfile           : {NetworkInterfaces}
+OSProfile                : {ComputerName, AdminUsername, WindowsConfiguration, Secrets, AllowExtensionOperations,
+RequireGuestProvisionSignal}
+ProvisioningState        : Succeeded
+StorageProfile           : {ImageReference, OsDisk, DataDisks}
+FullyQualifiedDomainName : myvm-5d08b8.EastUS.cloudapp.azure.com 
+ 
+ 
+--Type the following command to get the list of Vm's
+
+Get-AzVm
+
+ResourceGroupName Name Location          VmSize  OsType  NIC ProvisioningState Zone
+----------------- ---- --------          ------  ------  --- ----------------- ----
+VMLAB             myVM   eastus Standard_D2s_v3 Windows myVM         Succeeded
+
+
+-- to connect to this vm we need IP address of same, for that run the following command
+
+Get-AzPublicIpAddress -ResourceGroupName "VmLab" | Select "IpAddress"
+
+IpAddress
+---------
+40.87.51.86
+
+
+to mstsc into vm, use the following command  "mstsc /v:publicIpAddress"
+
+Type Following command and Hit Enter, it will prompt you to put credentials , use the credentials you have set initially
+and login
+
+	mstsc /v:40.87.51.86
+
+On Login, to see your VM in action, install the IIS web server. Open a PowerShell prompt on the VM and run the following command and 
+hit enter:	
+
+Install-WindowsFeature -name Web-Server -IncludeManagementTools
+	
+--glimpse from inside vm command prompt
+	
+Windows PowerShell
+Copyright (C) 2016 Microsoft Corporation. All rights reserved.
+
+PS C:\Users\gpsadmin> Install-WindowsFeature -name Web-Server -IncludeManagementTools
+
+Success Restart Needed Exit Code      Feature Result
+------- -------------- ---------      --------------
+True    No             Success        {Common HTTP Features, Default Document, D...	
+	
+
+--To see vm in action, type the IP address in web browser and hit enter
+40.87.51.86, It will open webpage with iis on that 
+
+
+-- Once done with Practice, you can delete all by simply removing the resource group, all associated with resource group will be deleted.
+
+Remove-AzResourceGroup -Name VMLAB
+
+when prompted, type Y and hit enter.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Of File~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's Make World a better place to work !

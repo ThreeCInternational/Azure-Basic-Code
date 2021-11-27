@@ -1,0 +1,89 @@
+--Step by Step Changes for Azure Powershell via Windows Powershell
+--Install PowerShellGet
+--Install Azure PowerShell Module
+--Loading the AzureRM( Resource Manager) Module
+--Connecting Azure via PowerShell
+
+--Project Details
+--Cloud Connect Consult (3C) Project
+--Prepared by GS
+--Email 			: CloudConnectConsult@Outlook.com  
+--Start Date		: 11/09/2021 04:25 AM 	(MM/DD/YYYY HH:MM AM/PM)
+--Date Completion	: 11/089/2021 05:06 AM	(MM/DD/YYYY HH:MM AM/PM)
+
+
+
+Installing PowershellGet
+
+- Open Windows Powershell in Admin mode,
+
+- Write the following command and hit Enter, it will tell you what is the current version you have 
+ Get-Module -Name PowerShellGet -ListAvailable | Select-Object -Property Name, Version, Path
+
+Name          Version Path
+----          ------- ----
+PowerShellGet 1.0.0.1 C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\1.0.0.1\PowerShellGet.psd1
+
+-Upgrade the PowerShellGet to latest version, write the following command and Hit Enter
+Install-Module PowerShellGet -Force 
+
+-To Check the latest version, Write the following command and hit Enter
+Get-Module -Name PowerShellGet -ListAvailable | Select-Object -Property Name, Version, Path
+
+Name          Version Path
+----          ------- ----
+PowerShellGet 2.2.5   C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\2.2.5\PowerShellGet.psd1
+PowerShellGet 1.0.0.1 C:\Program Files\WindowsPowerShell\Modules\PowerShellGet\1.0.0.1\PowerShellGet.psd1
+
+-Before using Azure Powershell functionality, Since the default policy on for script execution on windows powershell is RESTRICTED 
+-for running scripts, we need to change it , type the following script and hit enter >
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+--It will show following, enter A (Yes to All) and hit enter
+
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the
+execution policy might expose you to the security risks described in the
+about_Execution_Policies help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you
+want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"):
+
+
+-- Download Az module now, type the following script and hit enter
+**AllowClobber Switch makes sure, we will get full and complete Installtion of Azure module from Galary
+
+Install-Module -Name Az -AllowClobber
+
+**Try this -->  Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+
+--You will get following Message, type A and Hit Enter, if you use first (with allowclobber)
+
+Untrusted repository
+You are installing the modules from an untrusted repository. If you trust this repository,
+change its InstallationPolicy value by running the Set-PSRepository cmdlet. Are you sure you
+want to install the modules from 'PSGallery'?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"):
+
+
+--After Installation type the following command and Hit Enter
+
+ Get-Module -Name Az -ListAvailable | Select-Object -Property Name, Version, Path
+
+**Nothhing comes 
+
+--Loading Az Module
+-- Before Loading Azure Powershell Module, it must be first Loaded into Powershell Session
+-- Import Module is used to Load Powershell Modules so that their commands can be accessed
+-- Pulls the module into active session, so the commandLets can be accessed
+-- Type the following command and Hit Enter
+
+Import-Module -Name Az
+
+--Usually UnEventfull, no message will come
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Of File~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's Make World a better place to work !

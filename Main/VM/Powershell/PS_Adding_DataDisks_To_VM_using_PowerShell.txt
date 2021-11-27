@@ -1,0 +1,44 @@
+--Adding Data Disks to VM via PowerShell 
+
+--Project Details
+--Cloud Connect Consult (3C) Project
+--Prepared by GS
+--Email 			: CloudConnectConsult@Outlook.com   
+--Start Date		: 11/10/2021 09:27 AM 	(MM/DD/YYYY HH:MM AM/PM)
+--Date Completion	: 11/10/2021 10:30 AM	(MM/DD/YYYY HH:MM AM/PM)
+
+
+Step#1
+-- Type the following command and Hit Enter
+
+Import-Module -Name Az
+
+--Usually UnEventfull, no message will come
+
+--Connect Azure Tenant
+-- Connect-AzAccount is the easiest way to connect to Azure from Powershell
+--Type the following command and hit enter
+
+Connect-AzAccount
+
+--It will open dialog box for credentials, as soon as you enter, will print tenant details
+--and control comes back to command prompt 
+
+Account                     SubscriptionName TenantId                             Environment
+-------                     ---------------- --------                             -----------
+gurp1234569@hotmail.com 	Pay-As-You-Go    466a9e44-466a9e44-466a9e44-466a9e44 AzureCloud
+
+
+Ataaching Data Disk to  VM  is a four step process
+
+
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Of File~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Let's Make World a better place to work !

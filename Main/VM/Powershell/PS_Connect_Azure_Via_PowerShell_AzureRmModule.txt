@@ -1,0 +1,54 @@
+--Connecting to Azure Tenant via PowerShell
+
+--Project Details
+--Cloud Connect Consult (3C) Project
+--Prepared by GS
+--Email 			: CloudConnectConsult@Outlook.com 
+--Start Date		: 11/08/2021 09:20 AM 	(MM/DD/YYYY HH:MM AM/PM)
+--Date Completion	: 11/08/2021 09:41 AM 	(MM/DD/YYYY HH:MM AM/PM)
+
+
+
+--Type the following command and Hit Enter, to check if you have requisite module 
+
+ Get-Module -Name AzureRM -ListAvailable | Select-Object -Property Name, Version, Path
+
+Name    Version Path
+----    ------- ----
+AzureRM 6.13.2  C:\Program Files\WindowsPowerShell\Modules\AzureRM\6.13.2\AzureRM.psd1
+AzureRM 5.7.0   C:\Program Files\WindowsPowerShell\Modules\AzureRM\5.7.0\AzureRM.psd1
+
+--Loading AzureRM Module
+-- Before Loading Azure Powershell Module, it must be first Loaded into Powershell Session
+-- Import Module is used to Load Powershell Modules so that their commands can be accessed
+-- Pulls the module into active session, so the commandLets can be accessed
+-- Type the following command and Hit Enter
+
+Import-Module -Name AzureRM
+
+--Usually UnEventfull, no message will come
+
+--Connect Azure Tenant
+-- Connect-AzureRmAccount is the easiest way to connect to Azure from Powershell
+--Type the following command and hit enter
+
+Connect-AzureRmAccount
+
+--Will get the following warning, and open dialog box for credentials, as soon as you enter, will print tenant details
+--and control comes back to command prompt 
+
+WARNING: Because the Az modules have all the capabilities of AzureRM modules and more, we
+will retire the AzureRM modules on 29 February 2024. Learn more about the migration to Az:
+http://aka.ms/azpsmigrate.
+
+Account                     SubscriptionName TenantId                             Environment
+-------                     ---------------- --------                             -----------
+gurp1234569@hotmail.com 	Pay-As-You-Go    466a9e44-466a9e44-466a9e44-466a9e44 AzureCloud
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Of File~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's Make World a better place to work !
+
+
+
